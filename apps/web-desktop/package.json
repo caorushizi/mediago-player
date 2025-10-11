@@ -1,0 +1,39 @@
+{
+  "name": "web-desktop",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.12.2",
+    "clsx": "^2.1.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^3.3.1"
+  },
+  "devDependencies": {
+    "@ant-design/icons": "^6.1.0",
+    "@eslint/js": "^9.36.0",
+    "@tailwindcss/vite": "^4.1.14",
+    "@types/node": "^24.6.0",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^5.0.4",
+    "ahooks": "3.9.5",
+    "antd": "^5.27.4",
+    "eslint": "^9.36.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.22",
+    "globals": "^16.4.0",
+    "tailwindcss": "^4.1.14",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.45.0",
+    "vite": "npm:rolldown-vite@7.1.14",
+    "xgplayer": "3.0.23"
+  }
+}
