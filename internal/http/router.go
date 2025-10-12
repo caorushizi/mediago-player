@@ -18,6 +18,8 @@ type Config struct {
 	VideoRootPath string
 	// ServerAddr is the server address (e.g., ":8080") used for generating video URLs
 	ServerAddr string
+	// EnableSwagger controls whether to enable Swagger documentation (should be disabled in production)
+	EnableSwagger bool
 }
 
 // New creates router with default config (no video routes)
@@ -35,8 +37,11 @@ func NewWithConfig(cfg Config) *gin.Engine {
 	r.GET("/healthz", func(c *gin.Context) { c.String(http.StatusOK, "ok") })
 	r.GET("/readyz", func(c *gin.Context) { c.String(http.StatusOK, "ready") })
 
-	// Swagger documentation
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	// Swagger documentation (only in development/debug mode)
+	if cfg.EnableSwagger {
+		r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+		log.Println("[swagger] API documentation enabled at /docs/index.html")
+	}
 
 	// Versioned API
 	api := r.Group("/api")
@@ -64,21 +69,13 @@ func NewWithConfig(cfg Config) *gin.Engine {
 		}
 	}
 
-	// Exclude API/health paths from SPA handling
-	excludePrefixes := []string{"/api/", "/healthz", "/readyz", "/swagger/", "/videos/"}
+	// Exclude API/health/docs paths from SPA handling
+	excludePrefixes := []string{"/api/", "/healthz", "/readyz", "/docs", "/videos/"}
 
 	// Static files - Mobile SPA (/m)
 	r.Use(NewSPAHandler(SPAConfig{
 		FS:              assets.FS,
-		Root:            "mobile",
-		PathPrefix:      "/m",
-		ExcludePrefixes: excludePrefixes,
-	}))
-
-	// Static files - Desktop SPA (default)
-	r.Use(NewSPAHandler(SPAConfig{
-		FS:              assets.FS,
-		Root:            "desktop",
+		Root:            "ui",
 		ExcludePrefixes: excludePrefixes,
 	}))
 

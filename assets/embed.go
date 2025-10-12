@@ -2,5 +2,5 @@ package assets
 
 import "embed"
 
-//go:embed desktop/* mobile/*
+//go:embed ui/*
 var FS embed.FS

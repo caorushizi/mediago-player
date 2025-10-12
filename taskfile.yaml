@@ -3,47 +3,41 @@ version: '3'
 tasks:
   dev:
     desc: Run server in dev
+    deps: [dev-server, dev-ui]
+
+  dev-ui:
+    desc: Run frontend in dev
     cmds:
-      # Generate Swagger docs
-      - swag init -g cmd/server/main.go -o docs
-      - go run ./cmd/server
+      - pnpm dev
 
   dev-server:
-    desc: Build frontend and backend
+    desc: Build frontend and backend in development mode
+    deps: [docs]
     cmds:
-      # Generate Swagger docs
       - swag init -g cmd/server/main.go -o docs
-      # Build frontend apps
-      - pnpm build
-      # Copy dist folders to assets
-      - rm -rf assets/desktop assets/mobile
-      - mkdir -p assets/desktop assets/mobile
-      - cp -r apps/web-desktop/dist/. assets/desktop/
-      - cp -r apps/web-mobile/dist/. assets/mobile/
-      - go run ./cmd/server
+      - go run ./cmd/server -enable-docs
 
   test:
     cmds:
       - go test ./...
 
-  swagger:
+  docs:
     desc: Generate Swagger documentation
     cmds:
       - swag init -g cmd/server/main.go -o docs
 
   build:
     desc: Build frontend and backend
+    deps: [docs, build-ui]
     cmds:
-      # Generate Swagger docs
-      - swag init -g cmd/server/main.go -o docs
-      # Build frontend apps
-      - pnpm build
-      - rm -rf assets/desktop assets/mobile
-      - mkdir -p assets/desktop assets/mobile
-      - cp -r apps/web-desktop/dist/. assets/desktop/
-      - cp -r apps/web-mobile/dist/. assets/mobile/
-      # Build Go binary
-      - go build -o dist/server.exe ./cmd/server
+      - go build -o dist/mediago-player.exe ./cmd/server
+
+  build-ui:
+    desc: Build frontend app only
+    cmds:
+      - cd ui && pnpm build
+      - rm -rf assets/ui
+      - cp -r ui/dist/. assets/ui
 
   run:
     cmds:
