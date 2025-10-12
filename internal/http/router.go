@@ -34,8 +34,8 @@ func NewWithConfig(cfg Config) *gin.Engine {
 	r.Use(middleware.CORS())
 
 	// Health & readiness
-	r.GET("/healthz", func(c *gin.Context) { c.String(http.StatusOK, "ok") })
-	r.GET("/readyz", func(c *gin.Context) { c.String(http.StatusOK, "ready") })
+	r.Any("/healthz", func(c *gin.Context) { c.String(http.StatusOK, "ok") })
+	r.Any("/readyz", func(c *gin.Context) { c.String(http.StatusOK, "ready") })
 
 	// Swagger documentation (only in development/debug mode)
 	if cfg.EnableSwagger {
