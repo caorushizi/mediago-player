@@ -223,6 +223,7 @@ The npm package `@mediago/player` includes prebuilt binaries for:
 - Linux (x64): `@mediago/player-linux-x64`
 - Linux (ARM64): `@mediago/player-linux-arm64`
 - Windows (x64): `@mediago/player-win32-x64`
+- Windows (ARM64): `@mediago/player-win32-arm64`
 
 The correct binary is automatically selected during installation based on your platform.
 

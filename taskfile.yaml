@@ -113,14 +113,13 @@ tasks:
   release:npm:set-permissions:
     internal: true
     cmds:
-      - chmod +x npm/@mediago/player-darwin-x64/bin/mediago-player || true
-      - chmod +x npm/@mediago/player-darwin-arm64/bin/mediago-player || true
-      - chmod +x npm/@mediago/player-linux-x64/bin/mediago-player || true
-      - chmod +x npm/@mediago/player-linux-arm64/bin/mediago-player || true
+      - chmod +x npm/@mediago/player-darwin-x64/bin/mediago-player
+      - chmod +x npm/@mediago/player-darwin-arm64/bin/mediago-player
+      - chmod +x npm/@mediago/player-linux-x64/bin/mediago-player
+      - chmod +x npm/@mediago/player-linux-arm64/bin/mediago-player
 
   release:npm:publish:
     desc: Publish npm packages (requires PUBLISH=true)
-    deps: [release:npm:assemble-packages]
     cmds:
       - task: release:npm:verify-publish
       - cd npm/@mediago/player-darwin-x64 && npm publish --access public
@@ -128,6 +127,7 @@ tasks:
       - cd npm/@mediago/player-linux-x64 && npm publish --access public
       - cd npm/@mediago/player-linux-arm64 && npm publish --access public
       - cd npm/@mediago/player-win32-x64 && npm publish --access public
+      - cd npm/@mediago/player-win32-arm64 && npm publish --access public
       - cd npm/@mediago/player && npm publish --access public
       - echo "Published version {{.VERSION}} to npm"
 
@@ -147,7 +147,7 @@ tasks:
         vars: { VERSION: '{{.VERSION | default "0.0.0"}}' }
       - |
         if [ "{{.PUBLISH}}" = "true" ]; then
-          task release:npm:publish VERSION={{.VERSION}}
+          task release:npm:publish VERSION={{.VERSION}} PUBLISH={{.PUBLISH}}
         else
           echo "Dry run completed. Set PUBLISH=true to publish to npm."
         fi
