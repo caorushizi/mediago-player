@@ -9,6 +9,12 @@
   "bin": {
     "mediago-player": "bin/mediago-player"
   },
+  "exports": {
+    ".": {
+      "import": "./package.json",
+      "require": "./package.json"
+    }
+  },
   "optionalDependencies": {
     "@mediago/player-darwin-x64": "0.0.6",
     "@mediago/player-darwin-arm64": "0.0.6",
