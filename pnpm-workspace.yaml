@@ -1,2 +1,4 @@
 packages:
   - ui
+  - npm/@mediago/player
+  - npm/@mediago/player-*
