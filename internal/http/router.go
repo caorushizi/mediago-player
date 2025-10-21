@@ -34,8 +34,7 @@ func NewWithConfig(cfg Config) *gin.Engine {
 	r.Use(middleware.CORS())
 
 	// Health & readiness
-	r.Any("/healthz", func(c *gin.Context) { c.String(http.StatusOK, "ok") })
-	r.Any("/readyz", func(c *gin.Context) { c.String(http.StatusOK, "ready") })
+	r.GET("/healthy", func(c *gin.Context) { c.String(http.StatusOK, "ok") })
 
 	// Swagger documentation (only in development/debug mode)
 	if cfg.EnableSwagger {
@@ -70,7 +69,7 @@ func NewWithConfig(cfg Config) *gin.Engine {
 	}
 
 	// Exclude API/health/docs paths from SPA handling
-	excludePrefixes := []string{"/api/", "/healthz", "/readyz", "/docs", "/videos/"}
+	excludePrefixes := []string{"/api/", "/healthy", "/docs", "/videos/"}
 
 	// Static files - Mobile SPA (/m)
 	r.Use(NewSPAHandler(SPAConfig{

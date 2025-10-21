@@ -46,8 +46,11 @@ tasks:
   release:npm:clean:
     desc: Clean npm release artifacts
     cmds:
-      - rm -rf release/npm
-      - find npm -type d -name bin -exec rm -rf {} + 2>/dev/null || true
+      - cmd: "rm -rf release/npm"
+        ignore_error: true
+      - cmd: "find npm -type d -name bin -exec rm -rf {} + 2>/dev/null || true"
+        ignore_error: true
+        platforms: [linux, darwin]
 
   release:npm:build-ui:
     desc: Build UI for npm release

@@ -22,7 +22,7 @@ type SPAConfig struct {
 	PathPrefix string
 	// IndexFile is the fallback file for SPA routing (default: "index.html")
 	IndexFile string
-	// ExcludePrefixes is a list of URL path prefixes to exclude from SPA handling (e.g., ["/api/", "/healthz"])
+	// ExcludePrefixes is a list of URL path prefixes to exclude from SPA handling (e.g., ["/api/", "/healthy"])
 	ExcludePrefixes []string
 }
 

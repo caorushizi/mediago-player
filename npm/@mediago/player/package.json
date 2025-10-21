@@ -1,6 +1,6 @@
 {
   "name": "@mediago/player",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "MediaGo Player - A hybrid Go+React video player server",
   "main": "install.js",
   "scripts": {
@@ -9,19 +9,13 @@
   "bin": {
     "mediago-player": "bin/mediago-player"
   },
-  "exports": {
-    ".": {
-      "import": "./package.json",
-      "require": "./package.json"
-    }
-  },
   "optionalDependencies": {
-    "@mediago/player-darwin-x64": "0.0.6",
-    "@mediago/player-darwin-arm64": "0.0.6",
-    "@mediago/player-linux-x64": "0.0.6",
-    "@mediago/player-linux-arm64": "0.0.6",
-    "@mediago/player-win32-x64": "0.0.6",
-    "@mediago/player-win32-arm64": "0.0.6"
+    "@mediago/player-darwin-x64": "0.0.7",
+    "@mediago/player-darwin-arm64": "0.0.7",
+    "@mediago/player-linux-x64": "0.0.7",
+    "@mediago/player-linux-arm64": "0.0.7",
+    "@mediago/player-win32-x64": "0.0.7",
+    "@mediago/player-win32-arm64": "0.0.7"
   },
   "files": [
     "install.js",
