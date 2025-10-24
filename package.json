@@ -7,8 +7,8 @@
     "dev": "turbo dev",
     "build": "turbo build",
     "preview": "turbo preview",
-    "npm:assemble": "cross-env VERSION=0.0.7 gulp npm:assemble",
-    "npm:publish": "gulp npm:publish"
+    "npm:assemble": "cross-env VERSION=0.0.9 gulp npm:assemble",
+    "npm:publish": "cross-env VERSION=0.0.9 PUBLISH=true gulp npm:publish"
   },
   "keywords": [],
   "author": "",

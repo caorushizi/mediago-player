@@ -1,6 +1,6 @@
 {
   "name": "@mediago/player-linux-x64",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "description": "MediaGo Player binary for linux x64",
   "os": [
     "linux"
