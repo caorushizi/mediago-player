@@ -44,8 +44,8 @@ cd mediago-player
 pnpm install
 
 # Build and run
-pnpm build
-task run
+pnpm run gulp build
+pnpm run gulp run
 ```
 
 ## Usage
@@ -118,7 +118,7 @@ This project uses a monorepo structure with pnpm workspaces and Turborepo.
 - Go 1.21 or later
 - Node.js 18 or later
 - pnpm 8 or later
-- Task runner (`go install github.com/go-task/task/v3/cmd/task@latest`)
+- Gulp CLI (installed locally via `pnpm install`)
 
 ### Development Workflow
 
@@ -129,18 +129,16 @@ pnpm install
 # Start development servers (backend + frontend)
 pnpm dev
 # or
-task dev
+pnpm run gulp dev
 
-# Run tests
-task test
+# Run backend tests
+pnpm run gulp test
 
-# Build for production
-pnpm build
-# or
-task build
+# Build for production (frontend + backend)
+pnpm run gulp build
 
 # Generate Swagger documentation
-task docs
+pnpm run gulp docs
 ```
 
 ### Project Structure
@@ -167,7 +165,7 @@ mediago-player/
 │   └── @mediago/player-win32-x64   # Windows x64 binary
 ├── scripts/            # Build and release scripts
 ├── docs/               # Documentation
-├── taskfile.yaml       # Task definitions
+├── gulpfile.ts         # Build and automation tasks (TypeScript)
 └── package.json        # Root package (development)
 ```
 
@@ -183,8 +181,8 @@ pnpm build
 ### Build Backend Only
 
 ```bash
-task build
-# Output: dist/mediago-player.exe
+pnpm run gulp build
+# Output: dist/mediago-player(.exe)
 ```
 
 ### Cross-Compilation
@@ -192,7 +190,7 @@ task build
 Build binaries for all platforms:
 
 ```bash
-task release:npm:build-binaries
+pnpm run gulp release:npm:build-binaries
 ```
 
 This creates binaries for:
@@ -208,10 +206,10 @@ Quick release:
 
 ```bash
 # Dry run (build only)
-task release:npm VERSION=1.2.3
+VERSION=1.2.3 pnpm run gulp release:npm
 
 # Publish to npm
-PUBLISH=true task release:npm VERSION=1.2.3
+PUBLISH=true VERSION=1.2.3 pnpm run gulp release:npm
 ```
 
 ## Supported Platforms

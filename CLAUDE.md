@@ -58,7 +58,7 @@ pnpm preview
 
 ```bash
 # Run server in development mode (with API docs enabled)
-task dev
+pnpm run gulp dev
 # or: go run ./cmd/server -enable-docs
 
 # With custom port
@@ -74,20 +74,20 @@ go run ./cmd/server -video-root "D:\\Videos"
 go run ./cmd/server -host 0.0.0.0 -port 3000 -video-root "D:\\Videos"
 
 # Run tests
-task test
+pnpm run gulp test
 # or: go test ./...
 
 # Generate Swagger documentation
-task swagger
+pnpm run gulp docs
 # or: swag init -g cmd/server/main.go -o docs
 
 # Build binary (includes swagger generation)
-task build
-# Output: dist/server
+pnpm run gulp build
+# Output: dist/mediago-player(.exe)
 
 # Run built binary
-task run
-# or: ./dist/server
+pnpm run gulp run
+# or: ./dist/mediago-player(.exe)
 ```
 
 ### API Documentation
@@ -96,26 +96,26 @@ The project includes Swagger/OpenAPI documentation:
 
 - **Swagger UI**: Available at `http://localhost:8080/docs/index.html` (disabled in production by default)
 - **JSON Spec**: `http://localhost:8080/docs/doc.json`
-- **Generation**: Run `task swagger` to regenerate docs (automatically done during `task build`)
+- **Generation**: Run `pnpm run gulp docs` to regenerate docs (automatically done during `pnpm run gulp build`)
 
 **Enabling Documentation**:
-- **Development**: Use `task dev` or add `-enable-docs` flag when running the server
+- **Development**: Use `pnpm run gulp dev` or add `-enable-docs` flag when running the server
 - **Production**: Disabled by default, can be explicitly enabled with `-enable-docs` flag
 - **Note**: `.env` file is NOT automatically loaded. Use command-line flags or set environment variables manually.
 
   ```bash
   # Development mode with docs
-  task dev  # Automatically includes -enable-docs
+  pnpm run gulp dev  # Automatically includes -enable-docs
   # or
   go run ./cmd/server -enable-docs
 
   # Production build with docs enabled
-  ./dist/server -enable-docs
+  ./dist/mediago-player -enable-docs
   ```
 
 To add API documentation to new endpoints:
 1. Add Swagger comments to handler functions (see [internal/video/handler.go](internal/video/handler.go) for examples)
-2. Run `task swagger` to regenerate documentation
+2. Run `pnpm run gulp docs` to regenerate documentation
 3. Swagger comments follow [swaggo annotation format](https://github.com/swaggo/swag#declarative-comments-format)
 
 ### Frontend Only
@@ -196,7 +196,7 @@ mediago-player/
 │   │   └── static.go     # SPA static file handler
 │   ├── video/            # Video domain (handler/service/types pattern)
 │   └── util/             # Shared utilities (graceful shutdown, etc.)
-├── taskfile.yaml         # Task runner for Go commands
+├── gulpfile.ts           # Build automation tasks (TypeScript + Gulp)
 ├── turbo.json            # Turborepo pipeline configuration
 └── pnpm-workspace.yaml   # pnpm workspace definition
 ```
@@ -216,8 +216,8 @@ See [internal/video/](internal/video/) for reference implementation.
 ### Embedded Static Files
 
 Frontend builds are embedded into the Go binary at compile time. The build pipeline:
-1. `task build-ui` runs `cd ui && pnpm build` to create `ui/dist/`
-2. Build task copies `ui/dist/` to both `assets/desktop/` and `assets/mobile/` (git-ignored, mobile is for backward compatibility)
+1. `pnpm run gulp build` runs the UI build (`pnpm build` in `ui/`) and syncs assets
+2. The Gulp build task copies `ui/dist/` to the embedded assets directory (git-ignored)
 3. Go's `//go:embed` directive in [assets/embed.go](assets/embed.go) embeds these directories
 4. [internal/http/static.go](internal/http/static.go) provides `NewSPAHandler()` for serving embedded files with:
    - Automatic MIME type detection (using `mime.TypeByExtension` and content-based detection)
@@ -225,7 +225,7 @@ Frontend builds are embedded into the Go binary at compile time. The build pipel
    - Path prefix support (e.g., `/m/` for mobile path)
    - Security: Path traversal protection via `path.Clean()`
 
-**Important**: The `assets/desktop/` and `assets/mobile/` directories are generated during build and should not be committed to git. They are populated by the build task which copies the `ui/dist/` folder.
+**Important**: The `assets/desktop/` and `assets/mobile/` directories are generated during build and should not be committed to git. They are populated by the Gulp build pipeline which copies the `ui/dist/` folder.
 
 **Note**: The same responsive UI is served at both `/` and `/m/` paths for backward compatibility. The UI automatically adapts to screen size using Tailwind CSS responsive utilities.
 
