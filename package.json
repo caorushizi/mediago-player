@@ -27,6 +27,7 @@
       "vite": "npm:rolldown-vite@7.1.14"
     },
     "onlyBuiltDependencies": [
+      "@swc/core",
       "@tailwindcss/oxide",
       "core-js",
       "es5-ext"

@@ -29,7 +29,13 @@ export async function docsTask() {
 
 // Development tasks
 export async function devServerTask() {
-  await runCommand("go", ["run", "./cmd/server", "-enable-docs"]);
+  await runCommand("go", [
+    "run",
+    "./cmd/server",
+    "-enable-docs",
+    "-video-root",
+    "/mnt/c/Users/Microsoft/Desktop/mediago_download",
+  ]);
 }
 
 export async function devUiTask() {
@@ -125,7 +131,6 @@ export async function releaseNpmBuildBinariesTask() {
   }
 }
 
-
 export async function releaseNpmSetPermissionsTask() {
   if (IS_WINDOWS) {
     return;
@@ -189,8 +194,18 @@ async function generateRootPackage(version: string): Promise<string> {
       bin: "mediago-player",
     },
     { name: "linux-x64", os: ["linux"], cpu: ["x64"], bin: "mediago-player" },
-    { name: "linux-arm64", os: ["linux"], cpu: ["arm64"], bin: "mediago-player" },
-    { name: "win32-x64", os: ["win32"], cpu: ["x64"], bin: "mediago-player.exe" },
+    {
+      name: "linux-arm64",
+      os: ["linux"],
+      cpu: ["arm64"],
+      bin: "mediago-player",
+    },
+    {
+      name: "win32-x64",
+      os: ["win32"],
+      cpu: ["x64"],
+      bin: "mediago-player.exe",
+    },
     {
       name: "win32-arm64",
       os: ["win32"],
@@ -245,7 +260,8 @@ async function generateREADME(
 
 async function generateGitignore(pkgPath: string): Promise<void> {
   const gitignorePath = path.join(pkgPath, ".gitignore");
-  const content = "# Ignore bin directories containing compiled binaries\nbin/\n";
+  const content =
+    "# Ignore bin directories containing compiled binaries\nbin/\n";
   await fsp.writeFile(gitignorePath, content);
   console.log(`Generated ${gitignorePath}`);
 }
@@ -267,11 +283,31 @@ async function releaseNpmGeneratePackages(version: string) {
 
   const platforms: PlatformPackageInfo[] = [
     { name: "darwin-x64", os: ["darwin"], cpu: ["x64"], bin: "mediago-player" },
-    { name: "darwin-arm64", os: ["darwin"], cpu: ["arm64"], bin: "mediago-player" },
+    {
+      name: "darwin-arm64",
+      os: ["darwin"],
+      cpu: ["arm64"],
+      bin: "mediago-player",
+    },
     { name: "linux-x64", os: ["linux"], cpu: ["x64"], bin: "mediago-player" },
-    { name: "linux-arm64", os: ["linux"], cpu: ["arm64"], bin: "mediago-player" },
-    { name: "win32-x64", os: ["win32"], cpu: ["x64"], bin: "mediago-player.exe" },
-    { name: "win32-arm64", os: ["win32"], cpu: ["arm64"], bin: "mediago-player.exe" },
+    {
+      name: "linux-arm64",
+      os: ["linux"],
+      cpu: ["arm64"],
+      bin: "mediago-player",
+    },
+    {
+      name: "win32-x64",
+      os: ["win32"],
+      cpu: ["x64"],
+      bin: "mediago-player.exe",
+    },
+    {
+      name: "win32-arm64",
+      os: ["win32"],
+      cpu: ["arm64"],
+      bin: "mediago-player.exe",
+    },
   ];
 
   // Generate root package
@@ -288,12 +324,17 @@ async function releaseNpmGeneratePackages(version: string) {
       "@mediago",
       `player-${platform.name}`,
     );
-    await writePackageJson(platformPkgPath, await generatePlatformPackage(platform, version));
+    await writePackageJson(
+      platformPkgPath,
+      await generatePlatformPackage(platform, version),
+    );
     await generateREADME(platformPkgPath, platform);
     await generateGitignore(platformPkgPath);
   }
 
-  console.log(`Successfully generated all package files for version ${version}`);
+  console.log(
+    `Successfully generated all package files for version ${version}`,
+  );
 }
 
 export async function releaseNpmAssemblePackagesTask() {
@@ -356,7 +397,9 @@ export async function npmAssembleTask() {
   await removeDirectoriesNamed(NPM_DIR, "bin");
   await releaseNpmAssemblePackagesTask();
   console.log(`\nNPM packages assembled successfully!`);
-  console.log(`To publish, run: VERSION=${version} PUBLISH=true pnpm run gulp npm:publish`);
+  console.log(
+    `To publish, run: VERSION=${version} PUBLISH=true pnpm run gulp npm:publish`,
+  );
 }
 
 export async function npmPublishTask() {
@@ -364,7 +407,9 @@ export async function npmPublishTask() {
   const publish = process.env.PUBLISH;
 
   if (!version) {
-    throw new Error("VERSION environment variable is required (e.g., VERSION=1.2.3)");
+    throw new Error(
+      "VERSION environment variable is required (e.g., VERSION=1.2.3)",
+    );
   }
 
   if (publish !== "true") {
